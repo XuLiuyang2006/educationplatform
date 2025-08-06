@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final HttpSession session;
 
     @Override
+    @Transactional
     public void register(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new BizException(ResultCode.USERNAME_EXISTS);
@@ -58,6 +60,8 @@ public class UserServiceImpl implements UserService {
         UserDTO dto = new UserDTO();
         BeanUtils.copyProperties(user, dto);
         session.setAttribute("user", dto); // 将用户信息存入Session
+        session.setAttribute("userId", user.getId()); // 存储用户ID
+        session.setAttribute("role", user.getRole()); // 存储用户角色
         return dto;
     }
 
@@ -72,6 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void update(User user) {
         User existingUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new BizException(ResultCode.USER_NOT_FOUND));

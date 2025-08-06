@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class LoginLogAspect {
+public class LoginRequiredAspect {
 
     private final HttpSession session;//注入 HttpSession，用于获取当前用户的登录状态
 

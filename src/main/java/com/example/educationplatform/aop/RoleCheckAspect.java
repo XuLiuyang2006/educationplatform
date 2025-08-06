@@ -9,7 +9,6 @@ import com.example.educationplatform.entity.User;
 import com.example.educationplatform.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ public class RoleCheckAspect {
     private final UserRepository userRepository;
 
     @Before("@annotation(roleRequired)")
-    public void checkRole(JoinPoint joinPoint, RoleRequired roleRequired) {
+    public void checkRole( RoleRequired roleRequired) {
         UserDTO userDTO = (UserDTO) session.getAttribute("user");
 
         User user = userRepository.findByUsername(userDTO.getUsername())

@@ -3,7 +3,6 @@ package com.example.educationplatform.handler;
 import com.example.educationplatform.common.Result;
 import com.example.educationplatform.enums.ResultCode;
 import com.example.educationplatform.exception.BizException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

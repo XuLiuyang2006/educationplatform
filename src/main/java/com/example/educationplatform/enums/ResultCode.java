@@ -17,7 +17,14 @@ public enum ResultCode {
     NOT_LOGIN(4011, "未登录，请先登录"),
     EMAIL_NOT_NULl(4004, "邮箱不能为空"),
     PASSWORD_NOT_NULL(4005, "密码不能为空"),
-    SERVER_ERROR(500, "服务器异常");
+    SERVER_ERROR(500, "服务器异常"),
+
+    // 有关课程的状态码
+    COURSE_NOT_FOUND(4041, "课程不存在"),
+    COURSE_CREATION_FAILED(4006, "课程创建失败"),
+
+    NO_PERMISSION(4031, "无权限操作");
+
 
 
     private final int code;

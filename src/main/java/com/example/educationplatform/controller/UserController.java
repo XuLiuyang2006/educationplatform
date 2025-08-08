@@ -49,6 +49,7 @@ public class UserController {
 
     //GET的代码
     @LoginRequired  // 使用自定义注解，确保用户已登录
+    @RoleRequired(RoleEnum.ADMIN)  // 使用自定义注解，确保用户是管理员
     @Operation(summary = "获取用户信息", description = "根据ID获取用户信息接口")
     @GetMapping("/{id}")
     public Result<UserDTO> getById(@PathVariable Long id) {
@@ -70,6 +71,15 @@ public class UserController {
     @RoleRequired({RoleEnum.TEACHER, RoleEnum.ADMIN})
     public Result<String> teacherAndAdminCanAccess() {
         return Result.success("教师或管理员可访问");
+    }
+
+    @Operation(summary = "获取当前用户信息", description = "获取当前登录用户信息接口")
+    @GetMapping("/me")
+    @LoginRequired
+    public Result<UserDTO> getCurrentUser(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        UserDTO userDTO = userService.getById(userId);
+        return Result.success(userDTO);
     }
 
 

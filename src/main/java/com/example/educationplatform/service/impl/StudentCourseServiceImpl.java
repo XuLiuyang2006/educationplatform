@@ -1,0 +1,128 @@
+package com.example.educationplatform.service.impl;
+
+import com.example.educationplatform.dto.StudentCourseDTO;
+import com.example.educationplatform.entity.Course;
+import com.example.educationplatform.entity.StudentCourse;
+import com.example.educationplatform.enums.CourseStatus;
+import com.example.educationplatform.enums.ResultCode;
+import com.example.educationplatform.exception.BizException;
+import com.example.educationplatform.repository.CourseRepository;
+import com.example.educationplatform.repository.StudentCourseRepository;
+import com.example.educationplatform.service.StudentCourseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Tag(name = "学生选课服务", description = "处理学生选课相关的业务逻辑")
+@Service
+@RequiredArgsConstructor
+public class StudentCourseServiceImpl implements StudentCourseService {
+
+    private final StudentCourseRepository studentCourseRepository;
+    private final CourseRepository courseRepository;
+
+    @Override
+    @NonNull
+    public List<Course> getAllCourses() {
+        // 获取所有课程
+        return courseRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void enrollCourse(Long studentId, Long courseId) {
+
+        // 检查课程是否存在
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "课程不存在"));
+
+        // 检查是否已选课
+        if (studentCourseRepository.findByStudentIdAndCourseId(studentId, courseId).isPresent()) {
+            throw new BizException(ResultCode.ALREADY_ENROLLED, "您已选过此课程");
+        }
+        // 创建选课记录
+//        StudentCourse studentCourse = new StudentCourse();
+//        studentCourse.setStudentId(studentId);
+//        studentCourse.setCourseId(courseId);
+//        studentCourseRepository.save(studentCourse);
+
+        //检查该课程状态是否允许选课
+        if (course.getStatus() != CourseStatus.APPROVED) {
+            throw new BizException(ResultCode.COURSE_NOT_AVAILABLE, "课程状态不允许选课，当前课程状态：" + course.getStatus());
+        }
+
+        // 使用构建者模式(@Builder)创建选课记录
+        StudentCourse sc = StudentCourse.builder()
+                .studentId(studentId)
+                .courseId(courseId)
+                .progress(0.0)
+                .build();
+        studentCourseRepository.save(sc);
+    }
+
+    @Override
+    @Transactional
+    public void withdrawCourse(Long studentId, Long courseId) {
+        //TODO：记得添加检查是不是本人操作的逻辑
+
+
+        // 检查是否已选课
+        StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(studentId, courseId)
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "未找到选课记录"));
+        // 删除选课记录
+        studentCourseRepository.delete(studentCourse);
+    }
+
+    @Override
+    public List<StudentCourse> getMyCourses(Long studentId) {
+        // 获取学生的所有选课记录
+        return studentCourseRepository.findByStudentId(studentId);
+    }
+
+    @Override
+    @Transactional
+    public void updateProgress(Long studentId, StudentCourseDTO dto){
+
+        //检查课程是否存在
+        Course course = courseRepository.findById(dto.getCourseId())
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "课程不存在"));
+
+        // 如果课程状态不允许更新进度
+        if(course.getStatus() != CourseStatus.APPROVED) {
+            throw new BizException(ResultCode.COURSE_NOT_AVAILABLE, "课程状态不允许更新进度，当前课程状态：" + course.getStatus());
+        }
+
+        // 检查选课记录是否存在
+        StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(studentId, dto.getCourseId())
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "未找到选课记录"));
+
+        // 更新进度
+        studentCourse.setProgress(dto.getProgress());
+        studentCourseRepository.save(studentCourse);
+    }
+
+    @Override
+    public Double getProgress(Long studentId, Long courseId){
+
+        // 检查课程是否存在
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "课程不存在"));
+
+        // 如果课程状态不允许查询进度
+        if (course.getStatus() != CourseStatus.APPROVED) {
+            throw new BizException(ResultCode.COURSE_NOT_AVAILABLE, "课程状态不允许查询进度，当前课程状态：" + course.getStatus());
+        }
+
+        // 检查选课记录是否存在
+        StudentCourse studentCourse = studentCourseRepository.findByStudentIdAndCourseId(studentId, courseId)
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "未找到选课记录"));
+
+        return studentCourse.getProgress();
+    }
+
+
+}

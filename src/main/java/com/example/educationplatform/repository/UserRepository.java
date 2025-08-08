@@ -1,8 +1,11 @@
 package com.example.educationplatform.repository;
 
 import com.example.educationplatform.entity.User;
+import com.example.educationplatform.enums.RoleEnum;
+import com.example.educationplatform.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -16,5 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 根据邮箱查找用户（可用于找回密码等功能）
     Optional<User> findByEmail(String email);
 
+    List<User> findByRole(RoleEnum role);// 根据角色查找用户
+    List<User> findByStatus(UserStatus status);// 根据状态查找用户
 
 }

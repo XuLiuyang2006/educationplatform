@@ -4,6 +4,7 @@ import com.example.educationplatform.dto.LoginDTO;
 import com.example.educationplatform.dto.UserDTO;
 import com.example.educationplatform.entity.User;
 import com.example.educationplatform.enums.ResultCode;
+import com.example.educationplatform.enums.UserStatus;
 import com.example.educationplatform.exception.BizException;
 import com.example.educationplatform.repository.UserRepository;
 import com.example.educationplatform.service.UserService;
@@ -55,6 +56,11 @@ public class UserServiceImpl implements UserService {
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             throw new BizException(ResultCode.LOGIN_FAILED);
+        }
+
+        //判断用户状态是否可以登录
+        if (user.getStatus() != UserStatus.ACTIVE) {
+            throw new BizException(ResultCode.FORBIDDEN, "用户状态不允许登录，当前状态：" + user.getStatus());
         }
 
         UserDTO dto = new UserDTO();

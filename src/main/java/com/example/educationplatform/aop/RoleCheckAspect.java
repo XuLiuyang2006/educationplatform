@@ -29,7 +29,7 @@ public class RoleCheckAspect {
                 .orElseThrow(() -> new BizException(ResultCode.USER_NOT_FOUND)); // 用户不存在
 
         if (user == null) {
-            throw new BizException(ResultCode.NOT_LOGIN);
+            throw new BizException(ResultCode.NOT_LOGIN, "用户未登录或会话已过期，请重新登录");
         }
 
         RoleEnum userRole = user.getRole();
@@ -41,6 +41,6 @@ public class RoleCheckAspect {
             }
         }
 
-        throw new BizException(ResultCode.FORBIDDEN); // 角色无权限访问
+        throw new BizException(ResultCode.FORBIDDEN,"权限不足");
     }
 }

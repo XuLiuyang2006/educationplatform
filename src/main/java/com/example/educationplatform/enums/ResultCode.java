@@ -22,8 +22,12 @@ public enum ResultCode {
     // 有关课程的状态码
     COURSE_NOT_FOUND(4041, "课程不存在"),
     COURSE_CREATION_FAILED(4006, "课程创建失败"),
+    ALREADY_ENROLLED(4007, "已选过此课程"),
+    NO_PERMISSION(4031, "无权限操作"),
+    COURSE_NOT_AVAILABLE(4009, "课程状态不允许选课"),
 
-    NO_PERMISSION(4031, "无权限操作");
+    //管理员相关状态码
+    INVALID_OPERATION(4008, "无效操作");
 
 
 

@@ -1,5 +1,7 @@
 package com.example.educationplatform.aop;
 
+import com.example.educationplatform.enums.ResultCode;
+import com.example.educationplatform.exception.BizException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,7 @@ public class LoginRequiredAspect {
         //checkLogin()：拦截后执行的方法，如果未登录就抛出异常
         if (session.getAttribute("user") == null) {
             log.warn("用户未登录，拒绝访问");
-            throw new RuntimeException("用户未登录，请先登录");
+            throw new BizException(ResultCode.UNAUTHORIZED, "用户未登录，请先登录");
         }
     }
 }

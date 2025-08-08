@@ -9,4 +9,5 @@ public class CourseCreateDTO {
     private String title;
     private String description;
     private String contentUrl;
+
 }

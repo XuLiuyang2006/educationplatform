@@ -1,6 +1,7 @@
 package com.example.educationplatform.entity;
 
 import com.example.educationplatform.enums.RoleEnum;
+import com.example.educationplatform.enums.UserStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
@@ -47,8 +48,12 @@ public class User {
 
     //TODO:不理解这个关键字的作用
     @Enumerated(EnumType.STRING)//将枚举类型按字符串存储在数据库中
-    @Column(nullable = true,length = 20)
+    @Column(length = 20)
     private RoleEnum role;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.PENDING; // 默认新注册为待审核
 
 
 

@@ -25,6 +25,8 @@ public class Course {
 
     private Long teacherId; // 发布人
 
+    private String teacherName; // 发布人姓名
+
     @Enumerated(EnumType.STRING)
     private CourseStatus status;
 

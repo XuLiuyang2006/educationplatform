@@ -16,6 +16,7 @@ public class CourseDTO {
     private String contentUrl;
 
     private Long teacherId;
+    private String teacherName;
 
     private CourseStatus status;
 

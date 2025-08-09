@@ -19,6 +19,7 @@ public class CourseDTO {
     private String teacherName;
 
     private CourseStatus status;
+    private String rejectReason; // 可能为空
 
     private LocalDateTime createTime;
     private LocalDateTime updateTime;

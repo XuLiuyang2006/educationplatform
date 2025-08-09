@@ -34,6 +34,15 @@ public class Course {
 
     private LocalDateTime updateTime;
 
+    private Long auditBy; // 审核人ID
+
+    private String rejectReason; // 拒绝原因
+
+    private LocalDateTime auditTime; // 审核时间
+
+
+
+//TODO：这俩是什么意思？
     @PrePersist
     protected void onCreate() {
         this.createTime = LocalDateTime.now();

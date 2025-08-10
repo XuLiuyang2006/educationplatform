@@ -26,6 +26,7 @@ public class AdminCourseServiceImpl implements AdminCourseService {
         return courseRepository.findByStatus(CourseStatus.PENDING);
     }
 
+    //TODO：不能私自查询课程，放到公共控制器一起查询
     @Override
     public List<Course> getAllCourses() {
         // 查询所有课程

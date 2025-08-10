@@ -33,6 +33,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         return dto;
     }
 
+    //TODO：不能返回类型是实体类，不然会暴露数据库结构
     @Override
     public List<UserAdminDTO> getAllUsers(RoleEnum role, UserStatus status) {
         List<User> users;

@@ -4,7 +4,7 @@ package com.example.educationplatform.controller;
 import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
 import com.example.educationplatform.common.Result;
-import com.example.educationplatform.dto.StudentCourseDTO;
+import com.example.educationplatform.dto.StudentCourseCreateDTO;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.StudentCourseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +34,7 @@ public class StudentCourseController {
     @RoleRequired(RoleEnum.STUDENT)
     @Operation(summary = "获取我的课程", description = "获取学生已选课程列表接口")
     @GetMapping("/my")
-    public Result<?> getMyCourses(HttpSession session) {
+    public Result<?> getMyListCourses(HttpSession session) {
         //TODO:studentId的获取方式需要改进，得和userId、身份等关联起来
         Long studentId = (Long) session.getAttribute("userId");
         return Result.success(studentCourseService.getMyCourses(studentId));
@@ -68,7 +68,7 @@ public class StudentCourseController {
     @RoleRequired(RoleEnum.STUDENT)
     @Operation(summary = "更新课程进度", description = "更新学生在某门课程的学习进度接口")
     @PostMapping("/progress")
-    public Result<Void> updateProgress(@RequestBody StudentCourseDTO dto, HttpSession session) {
+    public Result<Void> updateProgress(@RequestBody StudentCourseCreateDTO dto, HttpSession session) {
         //TODO:studentId的获取方式需要改进，得和userId、身份等关联起来
         Long studentId = (Long) session.getAttribute("userId");
         studentCourseService.updateProgress(studentId, dto);

@@ -1,7 +1,7 @@
 package com.example.educationplatform.service.impl;
 
-import com.example.educationplatform.dto.CourseCreateDTO;
-import com.example.educationplatform.dto.CourseDTO;
+import com.example.educationplatform.dto.TeacherCourseCreateDTO;
+import com.example.educationplatform.dto.TeacherCourseListDTO;
 import com.example.educationplatform.entity.Course;
 import com.example.educationplatform.enums.CourseStatus;
 import com.example.educationplatform.enums.ResultCode;
@@ -23,8 +23,15 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
+
+    private TeacherCourseListDTO teacherCourseListToDTO(Course course) {
+        TeacherCourseListDTO teacherCourseListDTO = new TeacherCourseListDTO();
+        BeanUtils.copyProperties(course,teacherCourseListDTO);
+        return teacherCourseListDTO;
+    }
+
     @Override
-    public void createCourse(Long teacherId, CourseCreateDTO dto) {
+    public void createCourse(Long teacherId, TeacherCourseCreateDTO dto) {
         Course course = Course.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
@@ -40,7 +47,7 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
     }
 
     @Override
-    public void updateCourse(Long courseId, Long teacherId, CourseCreateDTO dto) {
+    public void updateCourse(Long courseId, Long teacherId, TeacherCourseCreateDTO dto) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND));
 
@@ -79,11 +86,10 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
     }
 
     @Override
-    public List<CourseDTO> listMyCourses(Long teacherId) {
-        return courseRepository.findByTeacherId(teacherId).stream().map(course -> {
-            CourseDTO dto = new CourseDTO();
-            BeanUtils.copyProperties(course, dto);
-            return dto;
-        }).collect(Collectors.toList());
+    public List<TeacherCourseListDTO> listMyCoursesList(Long teacherId) {
+        return courseRepository.findAll()
+                .stream()
+                .map(this::teacherCourseListToDTO)
+                .collect(Collectors.toList());
     }
 }

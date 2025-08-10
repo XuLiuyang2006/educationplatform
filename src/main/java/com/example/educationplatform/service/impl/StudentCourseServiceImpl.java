@@ -1,6 +1,7 @@
 package com.example.educationplatform.service.impl;
 
-import com.example.educationplatform.dto.StudentCourseDTO;
+import com.example.educationplatform.dto.StudentCourseCreateDTO;
+import com.example.educationplatform.dto.StudentCourseListDTO;
 import com.example.educationplatform.entity.Course;
 import com.example.educationplatform.entity.StudentCourse;
 import com.example.educationplatform.enums.CourseStatus;
@@ -12,10 +13,12 @@ import com.example.educationplatform.service.StudentCourseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "学生选课服务", description = "处理学生选课相关的业务逻辑")
 @Service
@@ -25,11 +28,25 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     private final StudentCourseRepository studentCourseRepository;
     private final CourseRepository courseRepository;
 
+    private StudentCourseListDTO studentCourseListToDTO(StudentCourse studentCourse) {
+        StudentCourseListDTO dto = new StudentCourseListDTO();
+        BeanUtils.copyProperties(studentCourse,dto);
+        return dto;
+    }
+    private StudentCourseListDTO studentCourseListToDTO(Course course) {
+        StudentCourseListDTO dto = new StudentCourseListDTO();
+        BeanUtils.copyProperties(course,dto);
+        return dto;
+    }
+
     @Override
     @NonNull
-    public List<Course> getAllCourses() {
+    public List<StudentCourseListDTO> getAllCourses() {
         // 获取所有课程
-        return courseRepository.findAll();
+        return courseRepository.findAll()
+                .stream()
+                .map(this::studentCourseListToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -78,14 +95,17 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     }
 
     @Override
-    public List<StudentCourse> getMyCourses(Long studentId) {
+    public List<StudentCourseListDTO> getMyCourses(Long studentId) {
         // 获取学生的所有选课记录
-        return studentCourseRepository.findByStudentId(studentId);
+        return studentCourseRepository.findByStudentId(studentId)
+                .stream()
+                .map(this::studentCourseListToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void updateProgress(Long studentId, StudentCourseDTO dto){
+    public void updateProgress(Long studentId, StudentCourseCreateDTO dto){
 
         //检查课程是否存在
         Course course = courseRepository.findById(dto.getCourseId())

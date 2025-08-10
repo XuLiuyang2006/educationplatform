@@ -9,9 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
-import java.lang.annotation.Target;
+import java.time.LocalDateTime;
+
 /**
  * 用户实体类
  */
@@ -51,10 +51,12 @@ public class User {
     @Column(length = 20)
     private RoleEnum role;
 
+    private LocalDateTime createTime = LocalDateTime.now();
+    private LocalDateTime updateTime = LocalDateTime.now();
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus status = UserStatus.PENDING; // 默认新注册为待审核
-
 
 
 

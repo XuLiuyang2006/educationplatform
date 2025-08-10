@@ -1,5 +1,6 @@
 package com.example.educationplatform.controller;
 
+import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.common.Result;
 import com.example.educationplatform.dto.AdminCourseAuditDTO;
 import com.example.educationplatform.entity.Course;
@@ -23,6 +24,7 @@ public class AdminCourseController {
     //GET代码
 
     // 查询待审核课表
+    @LoginRequired
     @Operation(summary = "查询待审核课表", description = "获取所有状态为待审核的课程列表")
     @GetMapping("/pending")
     public Result<List<Course>> getPendingCourses() {
@@ -30,6 +32,7 @@ public class AdminCourseController {
     }
 
     // 查询所有课表
+    @LoginRequired
     @Operation(summary = "查询所有课表", description = "获取所有课程列表，包括已审核和待审核的课程")
     @GetMapping("/all")
     public Result<List<Course>> getAllCourses() {
@@ -39,6 +42,7 @@ public class AdminCourseController {
     // POST代码
 
     //审核课程
+    @LoginRequired
     //TODO:这里的adminId是从请求头中获取的，前端需要在请求头中添加adminId，不明白为什么不是从session中获取
     @Operation(summary = "审核课程", description = "管理员审核课程，更新课程状态为通过或拒绝")
     @PostMapping("/audit")
@@ -50,10 +54,13 @@ public class AdminCourseController {
     }
 
     // 下架课程
+    @LoginRequired
     @Operation(summary = "下架课程", description = "管理员将课程下架，课程状态更新为已下架")
     @PostMapping("/{courseId}/offline")
     public Result<Void> offlineCourse(@PathVariable Long courseId,
-                                      @RequestAttribute("adminId") Long adminId) {
+                                      HttpSession session) {
+
+        Long adminId = (Long) session.getAttribute("userId"); // 从session中获取管理员ID
         adminCourseService.offlineCourse(courseId, adminId);
         return Result.success();
     }

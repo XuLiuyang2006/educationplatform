@@ -53,5 +53,19 @@ public class AdminStatsController {
         data.put("newCourseCount", adminStatsService.getNewCourseCount(start, end));
         return Result.success(data);
     }
+
+    @Operation(summary = "获取平台活动数据", description = "包括选课次数和访问次数")
+    @LoginRequired
+    @RoleRequired(RoleEnum.ADMIN)
+    @GetMapping("/activity")
+    public Result<Map<String, Long>> getActivity(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end) {
+        Map<String, Long> data = new HashMap<>();
+        data.put("courseSelectionCount", adminStatsService.getCourseSelectionCount(start, end));
+        data.put("visitCount", adminStatsService.getVisitCount(start, end));
+        return Result.success(data);
+    }
+
 }
 

@@ -3,7 +3,9 @@ package com.example.educationplatform.service.impl;
 import com.example.educationplatform.entity.User;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.repository.CourseRepository;
+import com.example.educationplatform.repository.StudentCourseRepository;
 import com.example.educationplatform.repository.UserRepository;
+import com.example.educationplatform.repository.VisitLogRepository;
 import com.example.educationplatform.service.AdminStatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class AdminStatsServiceImpl implements AdminStatsService {
 
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
+    private final StudentCourseRepository studentCourseRepository;
+    private final VisitLogRepository visitLogRepository;
 
     @Override
     public long getCourseCount() {
@@ -42,4 +46,19 @@ public class AdminStatsServiceImpl implements AdminStatsService {
         return courseRepository.countByCreateTimeBetween(start.atStartOfDay(), end.plusDays(1).atStartOfDay());
     }
 
+    @Override
+    public long getCourseSelectionCount(LocalDate start, LocalDate end) {
+        return studentCourseRepository.countByCreateTimeBetween(
+                start.atStartOfDay(),
+                end.plusDays(1).atStartOfDay()
+        );
+    }
+
+    @Override
+    public long getVisitCount(LocalDate start, LocalDate end) {
+        return visitLogRepository.countByVisitTimeBetween(
+                start.atStartOfDay(),
+                end.plusDays(1).atStartOfDay()
+        );
+    }
 }

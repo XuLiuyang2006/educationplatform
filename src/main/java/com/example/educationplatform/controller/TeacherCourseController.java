@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -63,5 +64,18 @@ public class TeacherCourseController {
         Long teacherId = (Long) session.getAttribute("userId");
         List<TeacherCourseListDTO> list = teacherCourseService.listMyCoursesList(teacherId);
         return Result.success(list);
+    }
+
+    @LoginRequired
+    @RoleRequired(RoleEnum.TEACHER)
+    @Operation(summary = "上传课程资源", description = "教师上传课程相关的资源文件，如图片、文档等")
+    @PostMapping("/{courseId}/upload")
+    public Result<String> uploadCourseResource(@PathVariable Long courseId,
+                                               @RequestParam("file") MultipartFile file,
+                                               HttpSession session) {
+        Long teacherId = (Long) session.getAttribute("userId");
+        // 调用服务上传，返回文件访问URL
+        String fileUrl = teacherCourseService.uploadCourseResource(teacherId, courseId, file);
+        return Result.success(fileUrl);
     }
 }

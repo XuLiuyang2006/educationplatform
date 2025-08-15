@@ -2,6 +2,7 @@ package com.example.educationplatform.service;
 
 import com.example.educationplatform.dto.TeacherCourseCreateDTO;
 import com.example.educationplatform.dto.TeacherCourseListDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,4 +21,13 @@ public interface TeacherCourseService {
     List<TeacherCourseListDTO> listMyCoursesList(Long teacherId);
 
     //TODO：查询所有课程，查询某一门课程的内容等功能可以放到公共控制器中实现
+
+    /**
+     * 上传课程资源
+     * @param teacherId 教师ID
+     * @param courseId 课程ID
+     * @param file 上传的文件
+     * @return 文件访问URL
+     */
+    String uploadCourseResource(Long teacherId, Long courseId, MultipartFile file);
 }

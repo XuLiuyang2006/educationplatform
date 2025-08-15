@@ -5,12 +5,16 @@ import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
 import com.example.educationplatform.common.Result;
 import com.example.educationplatform.dto.StudentCourseCreateDTO;
+import com.example.educationplatform.dto.StudentCourseListDTO;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.StudentCourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -50,6 +54,19 @@ public class StudentCourseController {
         return Result.success(studentCourseService.getProgress(studentId, courseId));
     }
 
+    @LoginRequired
+    @RoleRequired(RoleEnum.STUDENT)
+    @Operation(summary = "分页获取我的课程", description = "分页获取学生已选课程列表接口")
+    @GetMapping("/page")
+    public Result<Page<StudentCourseListDTO>> getMyCoursesPage(
+            @RequestParam(defaultValue = "0") int page,
+            HttpSession session){
+        Long studentId = (Long) session.getAttribute("userId");
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<StudentCourseListDTO> result = studentCourseService.selectByStudentId(studentId, pageable);
+        return Result.success(result);
+
+    }
 
     //POST接口
     @LoginRequired

@@ -9,6 +9,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -24,6 +25,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 //        if (session == null || session.getAttribute("userId") == null) {
 //            throw new BizException(ResultCode.NOT_LOGIN);// 未登录异常
 //        }
+        // 跳过静态资源处理器
+        if (handler instanceof ResourceHttpRequestHandler) {
+            return true;
+        }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         if (handlerMethod.getMethod().isAnnotationPresent(com.example.educationplatform.annotation.LoginRequired.class)) {
             //这里可以使用，hasMethodAnnotation()方法来判断是否有LoginRequired注解

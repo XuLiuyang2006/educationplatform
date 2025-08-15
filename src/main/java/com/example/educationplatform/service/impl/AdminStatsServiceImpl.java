@@ -48,7 +48,7 @@ public class AdminStatsServiceImpl implements AdminStatsService {
 
     @Override
     public long getCourseSelectionCount(LocalDate start, LocalDate end) {
-        return studentCourseRepository.countByCreateTimeBetween(
+        return studentCourseRepository.countBySelectedAtBetween(
                 start.atStartOfDay(),
                 end.plusDays(1).atStartOfDay()
         );

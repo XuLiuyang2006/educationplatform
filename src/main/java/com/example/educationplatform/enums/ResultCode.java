@@ -26,6 +26,10 @@ public enum ResultCode {
     NO_PERMISSION(4031, "无权限操作"),
     COURSE_NOT_AVAILABLE(4009, "课程状态不允许选课"),
 
+    //有关教师上传文件的状态码
+    FILE_UPLOAD_FAILED(4010, "文件上传失败"),
+    FILE_TYPE_NOT_SUPPORTED(4011, "不支持的文件类型"),
+
     //管理员相关状态码
     INVALID_OPERATION(4008, "无效操作");
 

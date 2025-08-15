@@ -16,4 +16,11 @@ spring:
       hibernate:
         format_sql: true
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+file:
+    upload-dir: E:/A5基于讯飞人工智能平台数智化教育应用软件开发/education-platform/uploads
 

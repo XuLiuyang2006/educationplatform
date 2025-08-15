@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/v3/api-docs/**", // 放行文档接口
                         "/swagger-resources/**", // 如果用了旧版本swagger
                         "/webjars/**", // swagger静态资源
-                        "/error"); // 放行登录注册
+                        "/error",
+                        "/uploads/**"); // 放行登录注册
     }
 }

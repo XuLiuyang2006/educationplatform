@@ -38,9 +38,11 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
 
 
     private TeacherCourseListDTO teacherCourseListToDTO(Course course) {
-        TeacherCourseListDTO teacherCourseListDTO = new TeacherCourseListDTO();
-        BeanUtils.copyProperties(course,teacherCourseListDTO);
-        return teacherCourseListDTO;
+        TeacherCourseListDTO dto = new TeacherCourseListDTO();
+        dto.setCourseId(course.getId());
+        dto.setCourseName(course.getTitle());
+        dto.setCoverImage(course.getContentUrl());
+        return dto;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
 
     @Override
     public List<TeacherCourseListDTO> listMyCoursesList(Long teacherId) {
-        return courseRepository.findAll()
+        return courseRepository.findByTeacherId(teacherId)
                 .stream()
                 .map(this::teacherCourseListToDTO)
                 .collect(Collectors.toList());

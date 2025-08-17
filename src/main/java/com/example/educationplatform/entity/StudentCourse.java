@@ -28,6 +28,8 @@ public class StudentCourse {
 
     private LocalDateTime selectedAt; // 选课时间
 
+    private String title; // 课程标题，方便查询
+
     // 关键：增加到 Course 的关联
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id",  updatable = false)

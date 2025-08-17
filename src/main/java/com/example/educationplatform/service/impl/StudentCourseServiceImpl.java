@@ -94,6 +94,7 @@ public class StudentCourseServiceImpl implements StudentCourseService {
                 .studentId(studentId)
                 .course(course)
                 .progress(0.0)
+                .title(course.getTitle())
                 .build();
         studentCourseRepository.save(sc);
     }

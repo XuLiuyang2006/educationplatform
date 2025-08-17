@@ -30,6 +30,11 @@ public enum ResultCode {
     FILE_UPLOAD_FAILED(4010, "文件上传失败"),
     FILE_TYPE_NOT_SUPPORTED(4011, "不支持的文件类型"),
 
+
+    //有关作业的状态码
+    ASSIGNMENT_NOT_FOUND(4042, "作业不存在"),
+    PARAM_ERROR(4000, "参数错误"),
+
     //管理员相关状态码
     INVALID_OPERATION(4008, "无效操作");
 

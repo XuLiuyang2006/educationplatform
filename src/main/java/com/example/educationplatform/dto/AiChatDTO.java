@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherCourseListDTO {
-    private Long courseId;
-    private String courseName;
-    private String coverImage;
+public class AiChatDTO {
+    private String question;
+    private String answer;
 }
+

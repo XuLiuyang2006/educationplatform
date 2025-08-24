@@ -1,5 +1,6 @@
 package com.example.educationplatform.service.impl;
 
+import com.example.educationplatform.ai.SparkAIClient;
 import com.example.educationplatform.dto.AiChatDTO;
 import com.example.educationplatform.entity.AiChat;
 import com.example.educationplatform.repository.AiChatRepository;
@@ -14,11 +15,13 @@ import java.util.List;
 public class AiChatServiceImpl implements AiChatService {
 
     private final AiChatRepository aiChatRepository;
+    private final SparkAIClient sparkAIClient;
 
     @Override
     public AiChatDTO askQuestion(Long userId, String question) {
-        // TODO: 调用讯飞大模型 API，这里先写假数据
-        String answer = "这是AI的回答（测试版）";
+        // 调用讯飞 API
+        String answer = sparkAIClient.ask(question);
+
 
         AiChat aiChat = new AiChat();
         aiChat.setUserId(userId);
@@ -32,6 +35,14 @@ public class AiChatServiceImpl implements AiChatService {
     @Override
     public List<AiChatDTO> getHistory(Long userId) {
         return aiChatRepository.findByUserId(userId)
+                .stream()
+                .map(chat -> new AiChatDTO(chat.getQuestion(), chat.getAnswer()))
+                .toList();
+    }
+
+    @Override
+    public List<AiChatDTO> getAllHistory() {
+        return aiChatRepository.findAll()
                 .stream()
                 .map(chat -> new AiChatDTO(chat.getQuestion(), chat.getAnswer()))
                 .toList();

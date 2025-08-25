@@ -101,8 +101,12 @@ public class SparkAIClient {
                 }
             }, config, new URI(wsUrl));
 
+            //使用 CountDownLatch.await() 方法等待响应完成，等待AI回答结束
             latch.await();
+
             System.out.println("\n✅ 完整答案: " + finalAnswer);
+
+            //finalAnswer是StringBuilder类型，调用toString()方法转换为String类型返回
             return finalAnswer.toString();
 
         } catch (Exception e) {

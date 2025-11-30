@@ -1,6 +1,6 @@
 package com.example.educationplatform.controller;
 
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.dto.AiChatDTO;
 import com.example.educationplatform.service.AiChatService;
 import io.swagger.v3.oas.annotations.Operation;

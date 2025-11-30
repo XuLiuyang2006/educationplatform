@@ -1,0 +1,125 @@
+@startuml
+title 模块化分层系统架构图（按模块划分）
+
+package "用户模块" {
+    [UserController]
+    [UserService]
+    [UserServiceImpl]
+    [UserRepository]
+
+    UserController --> UserService
+    UserService --> UserServiceImpl
+    UserServiceImpl --> UserRepository
+}
+
+package "管理员用户模块" {
+    [AdminUserController]
+    [AdminUserService]
+    [AdminUserServiceImpl]
+    [AdminUserRepository]
+
+    AdminUserController --> AdminUserService
+    AdminUserService --> AdminUserServiceImpl
+    AdminUserServiceImpl --> AdminUserRepository
+}
+
+package "教师课程模块" {
+    [TeacherCourseController]
+    [TeacherCourseService]
+    [TeacherCourseServiceImpl]
+    [TeacherCourseRepository]
+
+    TeacherCourseController --> TeacherCourseService
+    TeacherCourseService --> TeacherCourseServiceImpl
+    TeacherCourseServiceImpl --> TeacherCourseRepository
+}
+
+package "管理员课程模块" {
+    [AdminCourseController]
+    [AdminCourseService]
+    [AdminCourseServiceImpl]
+    [AdminCourseRepository]
+
+    AdminCourseController --> AdminCourseService
+    AdminCourseService --> AdminCourseServiceImpl
+    AdminCourseServiceImpl --> AdminCourseRepository
+}
+
+package "公开课程模块" {
+    [PublicCourseController]
+    [PublicCourseService]
+    [PublicCourseServiceImpl]
+    [PublicCourseRepository]
+
+    PublicCourseController --> PublicCourseService
+    PublicCourseService --> PublicCourseServiceImpl
+    PublicCourseServiceImpl --> PublicCourseRepository
+}
+
+package "学生选课模块" {
+    [StudentCourseController]
+    [StudentCourseService]
+    [StudentCourseServiceImpl]
+    [StudentCourseRepository]
+
+    StudentCourseController --> StudentCourseService
+    StudentCourseService --> StudentCourseServiceImpl
+    StudentCourseServiceImpl --> StudentCourseRepository
+}
+
+package "教师作业模块" {
+    [TeacherAssignmentController]
+    [TeacherAssignmentService]
+    [TeacherAssignmentServiceImpl]
+    [TeacherAssignmentRepository]
+
+    TeacherAssignmentController --> TeacherAssignmentService
+    TeacherAssignmentService --> TeacherAssignmentServiceImpl
+    TeacherAssignmentServiceImpl --> TeacherAssignmentRepository
+}
+
+package "学生作业模块" {
+    [StudentAssignmentController]
+    [StudentAssignmentService]
+    [StudentAssignmentServiceImpl]
+    [StudentAssignmentRepository]
+
+    StudentAssignmentController --> StudentAssignmentService
+    StudentAssignmentService --> StudentAssignmentServiceImpl
+    StudentAssignmentServiceImpl --> StudentAssignmentRepository
+}
+
+package "档案模块" {
+    [ProfileController]
+    [ProfileService]
+    [ProfileServiceImpl]
+    [ProfileRepository]
+
+    ProfileController --> ProfileService
+    ProfileService --> ProfileServiceImpl
+    ProfileServiceImpl --> ProfileRepository
+}
+
+package "AI 问答模块" {
+    [AiController]
+    [AiService]
+    [AiServiceImpl]
+    [AiRecordRepository]
+
+    AiController --> AiService
+    AiService --> AiServiceImpl
+    AiServiceImpl --> AiRecordRepository
+}
+
+package "推荐模块" {
+    [RecommendController]
+    [RecommendService]
+    [RecommendServiceImpl]
+    [RecommendRepository]
+
+    RecommendController --> RecommendService
+    RecommendService --> RecommendServiceImpl
+    RecommendServiceImpl --> RecommendRepository
+}
+
+@enduml

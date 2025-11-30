@@ -1,0 +1,75 @@
+@startuml
+'top to bottom direction
+left to right direction
+skinparam nodesep 200
+skinparam ranksep 1000
+
+' 外部实体
+actor 学生 as student
+actor 教师 as teacher
+actor 管理员 as admin
+
+' 处理过程
+rectangle "用户认证" as auth
+rectangle "课程管理" as course
+rectangle "作业管理" as assignment
+rectangle "AI助手" as ai
+rectangle "推荐系统" as recommend
+rectangle "数据统计" as stats
+
+' 数据存储
+database "用户数据库" as user_db
+database "课程数据库" as course_db
+database "作业数据库" as assignment_db
+database "AI记录库" as ai_db
+
+' 学生数据流
+student -> auth : 登录凭证\n注册信息
+auth -> student : 认证结果\n用户信息
+
+student -> course : 选课/退课请求\n课程查询
+course -> student : 课程列表\n课程详情
+
+student -> assignment : 作业提交\n作业查询
+assignment -> student : 提交结果\n作业详情
+
+student -> ai : 问题内容
+ai -> student : AI回答
+
+student -> recommend : 推荐请求
+recommend -> student : 推荐课程
+
+' 教师数据流
+teacher -> auth : 登录凭证
+auth -> teacher : 认证结果
+
+teacher -> course : 课程发布\n课程更新
+course -> teacher : 发布结果\n我的课程
+
+teacher -> assignment : 作业发布\n批改请求
+assignment -> teacher : 发布结果\n批改完成
+
+teacher -> stats : 统计请求
+stats -> teacher : 教学数据
+
+' 管理员数据流
+admin -> auth : 登录凭证
+auth -> admin : 认证结果
+
+admin -> course : 课程审核
+course -> admin : 审核结果
+
+admin -> stats : 数据请求
+stats -> admin : 平台数据
+
+' 处理过程与数据存储
+auth -> user_db : 验证用户\n存储信息
+course -> course_db : 读写课程\n更新状态
+assignment -> assignment_db : 存储作业\n记录提交
+ai -> ai_db : 保存记录\n读取历史
+recommend -> course_db : 读取课程数据
+stats -> user_db : 读取用户数据
+stats -> course_db : 读取课程数据
+stats -> assignment_db : 读取作业数据
+
+@enduml

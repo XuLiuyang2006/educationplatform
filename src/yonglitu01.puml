@@ -1,0 +1,47 @@
+@startuml
+'top to bottom direction
+left to right direction
+skinparam {
+  nodesep 100
+  ranksep 150
+}
+
+
+
+rectangle "教学平台系统" {
+  usecase "用户登录" as login
+  usecase "选课管理" as course
+  usecase "作业管理" as assignment
+  usecase "课程学习" as study
+  usecase "AI问答" as ai
+  usecase "推荐系统" as recommend
+  usecase "数据统计" as stats
+}
+
+
+actor "学生" as student
+
+
+student --> login
+student --> course
+student --> assignment
+student --> study
+student --> ai
+student --> recommend
+
+
+actor "教师" as teacher
+
+teacher --> login
+teacher --> course
+teacher --> assignment
+teacher --> stats
+
+actor "管理员" as admin
+
+admin --> login
+admin --> stats
+
+login -[hidden]--> course
+
+@enduml

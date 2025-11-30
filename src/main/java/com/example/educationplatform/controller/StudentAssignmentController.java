@@ -2,7 +2,7 @@ package com.example.educationplatform.controller;
 
 import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.dto.*;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.AssignmentService;
@@ -38,10 +38,10 @@ public class StudentAssignmentController {
     @LoginRequired
     @RoleRequired(RoleEnum.STUDENT)
     @Operation(summary = "查看作业详情")
-    @GetMapping("/{id}")
-    public Result<AssignmentDetailDTO> detail(@PathVariable Long id, HttpSession session) {
+    @GetMapping("/{assignmentId}")
+    public Result<AssignmentDetailDTO> detail(@PathVariable Long assignmentId, HttpSession session) {
         Long studentId = (Long) session.getAttribute("userId");
-        return Result.success(assignmentService.getDetailForStudent(studentId, id));
+        return Result.success(assignmentService.getDetailForStudent(studentId, assignmentId));
     }
 
     @LoginRequired
@@ -53,7 +53,6 @@ public class StudentAssignmentController {
         submissionService.submit(studentId, dto);
         return Result.success();
     }
-
     @LoginRequired
     @RoleRequired(RoleEnum.STUDENT)
     @Operation(summary = "更新已提交的作业（截止前）")

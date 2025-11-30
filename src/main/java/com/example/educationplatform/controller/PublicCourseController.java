@@ -1,7 +1,7 @@
 package com.example.educationplatform.controller;
 
 import com.example.educationplatform.annotation.LoginRequired;
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.dto.PublicCourseDetailDTO;
 import com.example.educationplatform.dto.PublicCourseListDTO;
 import com.example.educationplatform.service.PublicCourseService;

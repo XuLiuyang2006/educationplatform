@@ -20,7 +20,7 @@ public class StudentCourse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;// 选课记录ID，不是课程ID，用于标识选课记录
 
-    @Column(nullable = false)
+    @Column(name = "student_id", nullable = false)
     private Long studentId;
 
     @Column(nullable = false)
@@ -34,6 +34,11 @@ public class StudentCourse {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id",  updatable = false)
     private Course course;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+    private StudentProfile studentProfile;
+
 
     @PrePersist
     protected void onCreate() {

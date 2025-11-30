@@ -17,12 +17,17 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id", referencedColumnName = "userId", insertable = false, updatable = false)
+    private TeacherProfile teacherProfile;//这里关联外键，把course.teacherid->TeacherProfile.uerid
+
     private String title;
 
     private String description;
 
     private String contentUrl; // 视频或文档路径
 
+    @Column(name = "teacher_id",nullable = false)
     private Long teacherId; // 发布人
 
     private String teacherName; // 发布人姓名
@@ -40,9 +45,15 @@ public class Course {
 
     private LocalDateTime auditTime; // 审核时间
 
+    private String tags; // 课程标签，逗号分隔
+
+    @Column(name = "visit_count", columnDefinition = "BIGINT DEFAULT 0")
+    private Long visitCount = 0L;
 
 
-//TODO：这俩是什么意思？
+
+
+    //TODO：这俩是什么意思？
     @PrePersist
     protected void onCreate() {
         this.createTime = LocalDateTime.now();

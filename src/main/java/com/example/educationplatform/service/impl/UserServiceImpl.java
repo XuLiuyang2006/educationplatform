@@ -2,6 +2,7 @@ package com.example.educationplatform.service.impl;
 
 import com.example.educationplatform.dto.LoginDTO;
 import com.example.educationplatform.dto.UserDTO;
+import com.example.educationplatform.dto.UserRegisterDTO;
 import com.example.educationplatform.entity.User;
 import com.example.educationplatform.enums.ResultCode;
 import com.example.educationplatform.enums.UserStatus;
@@ -26,26 +27,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void register(User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
+    public void register(UserRegisterDTO userRegisterDTO) {
+        if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
             throw new BizException(ResultCode.USERNAME_EXISTS);
         }
 
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+        if (userRegisterDTO.getUsername() == null || userRegisterDTO.getUsername().isEmpty()) {
+            throw new BizException(ResultCode.USERNAME_NOT_NULL, "用户名不能为空");
+        }
+
+        if (userRegisterDTO.getPassword() == null || userRegisterDTO.getPassword().isEmpty()) {
             throw new BizException(ResultCode.PASSWORD_NOT_NULL, "密码不能为空");
         }
 
         // 检查邮箱是否为空
-        if (user.getEmail() == null||user.getEmail().isEmpty() ) {
+        if (userRegisterDTO.getEmail() == null||userRegisterDTO.getEmail().isEmpty() ) {
             throw new BizException(ResultCode.EMAIL_NOT_NULl);
         }
 
         // 检查邮箱是否已注册
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(userRegisterDTO.getEmail()).isPresent()) {
             throw new BizException(ResultCode.EMAIL_EXISTS);
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRegisterDTO.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+
+        //DTO -> Entity
+        User user = User.builder()
+                        .username(userRegisterDTO.getUsername())
+                        .password(userRegisterDTO.getPassword())
+                        .email(userRegisterDTO.getEmail())
+                        .role(userRegisterDTO.getRole())
+                        .status(UserStatus.PENDING) // 新注册用户默认状态为PENDING
+                        .build();
+        //TODO：这里需要把相应的注册信息填入profile表中
+
         userRepository.save(user);
     }
 

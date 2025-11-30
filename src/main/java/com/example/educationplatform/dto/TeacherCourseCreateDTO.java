@@ -9,4 +9,5 @@ public class TeacherCourseCreateDTO {
     private String title;
     private String description;
     private String contentUrl;
+    private String tags; // 课程标签，逗号分隔
 }

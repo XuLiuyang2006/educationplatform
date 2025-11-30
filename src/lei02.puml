@@ -1,0 +1,25 @@
+@startuml
+class User {
+  -id: Long
+  -username: String
+  -password: String
+  -email: String
+  -role: RoleEnum
+}
+
+class Student {
+  -studentId: String
+  -major: String
+  -grade: String
+}
+
+class Course {
+  -courseId: String
+  -courseName: String
+  -credits: int
+  -description: String
+}
+
+User <|-- Student
+Student "many" -- "many" Course
+@enduml

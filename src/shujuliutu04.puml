@@ -1,0 +1,79 @@
+@startuml
+skinparam nodesep 20
+skinparam ranksep 900
+!pragma useExperimentalFeatures true
+
+' ---------- 外部实体 ----------
+actor "学生" as Student
+actor "教师" as Teacher
+actor "管理员" as Admin
+
+' ---------- 系统边界 ----------
+frame "教育平台系统" {
+    ' 处理过程
+    process "用户认证\n(User Auth)" as Auth
+    process "课程管理\n(Course Mgmt)" as Course
+    process "作业管理\n(Assignment Mgmt)" as Assignment
+    process "AI助手\n(AI Assistant)" as AI
+    process "推荐系统\n(Recommendation)" as Rec
+    process "数据统计\n(Data Analytics)" as Stats
+}
+
+' ---------- 数据存储 ----------
+database "用户数据库\n(User DB)" as UserDB
+database "课程数据库\n(Course DB)" as CourseDB
+database "作业数据库\n(Assignment DB)" as AssignDB
+database "AI记录库\n(AI Log DB)" as AILogDB
+database "用户行为库\n(User Behavior DB)" as BehaviorDB
+
+' ---------- 学生交互（输入 -> 处理；处理 -> 输出） ----------
+Student --> Auth   : 登录请求
+Auth --> Student   : 登录结果 / 登录失败响应
+
+Student --> Course : 查询课程请求
+Course --> Student : 课程数据
+
+Student --> Assignment : 作业提交请求
+Assignment --> Student   : 提交结果 / 提交失败响应
+
+Student --> AI     : 提问内容
+AI --> Student     : 回答内容
+
+Student --> Rec    : 推荐请求
+Rec --> Student    : 推荐课程列表
+
+' ---------- 教师交互 ----------
+Teacher --> Course : 发布课程请求
+Course --> Teacher : 发布结果
+
+Teacher --> Assignment : 发布作业请求
+Assignment --> Teacher   : 发布结果
+
+Teacher --> Assignment : 批改作业数据
+Assignment --> Teacher   : 批改结果
+
+Teacher --> Stats  : 教学数据查询请求
+Stats --> Teacher  : 教学数据报表
+
+' ---------- 管理员交互 ----------
+Admin --> Course   : 审核请求
+Course --> Admin   : 审核结果 / 审核拒绝结果
+
+Admin --> Stats    : 平台数据查询请求
+Stats --> Admin    : 平台数据报表
+
+' ---------- 处理过程 <-> 数据存储（名词性描述） ----------
+Auth <--> UserDB   : 用户凭证记录 / 用户基础信息
+Course <--> CourseDB : 课程记录读写
+Assignment <--> AssignDB : 作业记录与提交记录
+AI <--> AILogDB   : AI对话记录存取
+AI --> UserDB     : 用户基础信息读取（用于上下文）
+Rec --> CourseDB  : 课程元数据读取
+Rec --> BehaviorDB : 用户行为与偏好读取
+Stats --> UserDB  : 用户统计数据读取
+Stats --> CourseDB : 课程统计数据读取
+Stats --> AssignDB : 作业统计数据读取
+Stats --> AILogDB : AI 使用统计读取
+Stats --> BehaviorDB : 行为分析数据读取
+
+@enduml

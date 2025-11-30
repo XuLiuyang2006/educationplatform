@@ -1,6 +1,7 @@
 package com.example.educationplatform.service.impl;
 
 import com.example.educationplatform.dto.TeacherCourseCreateDTO;
+import com.example.educationplatform.dto.TeacherCourseDTO;
 import com.example.educationplatform.dto.TeacherCourseListDTO;
 import com.example.educationplatform.entity.Course;
 import com.example.educationplatform.entity.CourseMaterials;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,8 +45,22 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
         return dto;
     }
 
+    private TeacherCourseDTO teacherCourseToDTO(Course course) {
+        TeacherCourseDTO dto = new TeacherCourseDTO();
+        BeanUtils.copyProperties(course, dto);
+        dto.setStatus(course.getStatus().name());
+        return dto;
+    }
+
+
     @Override
     public void createCourse(Long teacherId, TeacherCourseCreateDTO dto) {
+
+        //判断课程标题是否为空
+        if (dto.getTitle() == null || dto.getTitle().isEmpty()) {
+            throw new BizException(ResultCode.COURSE_TITLE_NOT_NULL, "课程标题不能为空");
+        }
+
         Course course = Course.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
@@ -57,6 +71,7 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
                         .orElseThrow(() -> new BizException(ResultCode.USER_NOT_FOUND))
                         .getUsername())
                 .status(CourseStatus.PENDING) // 默认状态为待审核
+                .tags(dto.getTags())
                 .build();
         courseRepository.save(course);
     }
@@ -101,10 +116,10 @@ public class TeacherCourseServiceImpl implements TeacherCourseService {
     }
 
     @Override
-    public List<TeacherCourseListDTO> listMyCoursesList(Long teacherId) {
+    public List<TeacherCourseDTO> listMyCoursesList(Long teacherId) {
         return courseRepository.findByTeacherId(teacherId)
                 .stream()
-                .map(this::teacherCourseListToDTO)
+                .map(this::teacherCourseToDTO)
                 .collect(Collectors.toList());
     }
 

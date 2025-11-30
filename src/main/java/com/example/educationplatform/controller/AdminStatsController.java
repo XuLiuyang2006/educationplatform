@@ -2,7 +2,7 @@ package com.example.educationplatform.controller;
 
 import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.AdminStatsService;
 import io.swagger.v3.oas.annotations.Operation;

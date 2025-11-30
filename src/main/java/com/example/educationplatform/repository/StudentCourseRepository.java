@@ -1,7 +1,5 @@
 package com.example.educationplatform.repository;
 
-import com.example.educationplatform.dto.StudentCourseListDTO;
-import com.example.educationplatform.entity.Course;
 import com.example.educationplatform.entity.StudentCourse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +24,14 @@ public interface StudentCourseRepository extends JpaRepository<StudentCourse, Lo
     // 删除选课记录
     void deleteByStudentIdAndCourseId(Long studentId, Long courseId);
 
-    //分页查询
-    // 分页按 studentId 查询，并通过 EntityGraph 把 course 一并加载
+    // 分页查询（带 course 一并加载）
     @EntityGraph(attributePaths = "course")
     Page<StudentCourse> findByStudentId(Long studentId, Pageable pageable);
 
-    //根据课程id统计选课人数
+    // 根据课程id统计选课人数
     Long countByCourseId(Long courseId);
+
+//    // 🔥 热门排行榜：统计课程选课人数并按人数降序排序
+//    @Query("SELECT sc.course FROM StudentCourse sc GROUP BY sc.course ORDER BY COUNT(sc.course) DESC")
+//    Page<Course> findPopularCourses(Pageable pageable);
 }

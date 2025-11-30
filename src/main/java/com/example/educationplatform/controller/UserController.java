@@ -2,9 +2,10 @@ package com.example.educationplatform.controller;
 
 import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.dto.LoginDTO;
 import com.example.educationplatform.dto.UserDTO;
+import com.example.educationplatform.dto.UserRegisterDTO;
 import com.example.educationplatform.entity.User;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.UserService;
@@ -27,8 +28,8 @@ public class UserController {
     //POST的代码
     @Operation(summary = "用户注册", description = "用户注册接口")
     @PostMapping("/register")
-    public Result<Void> register(@Valid @RequestBody User user) {
-        userService.register(user);
+    public Result<Void> register(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+        userService.register(userRegisterDTO);
         return Result.success();
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Tag(name = "管理员用户管理接口", description = "提供管理员对用户的管理功能，包括获取、审核、封禁等操作")
 @RestController
-@RequestMapping("/admin/users")
+@RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
 public class AdminUserController {
 
@@ -75,7 +75,7 @@ public class AdminUserController {
     }
 
     // DELETE的代码
-    @PutMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     @Operation(summary = "删除用户", description = "删除指定ID的用户")
     @LoginRequired
     @RoleRequired(RoleEnum.ADMIN) // 确保只有管理员可以访问此接口

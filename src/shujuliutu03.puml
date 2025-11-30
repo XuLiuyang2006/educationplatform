@@ -1,0 +1,102 @@
+@startuml
+!pragma useExperimentalFeatures true
+
+' ===============================
+' 外部实体（External Entities）
+' ===============================
+entity "学生" as Student
+entity "教师" as Teacher
+entity "管理员" as Admin
+
+' ===============================
+' 系统边界（System Boundary）
+' ===============================
+frame "教育平台系统" {
+
+    ' ---------- 处理过程（Processes） ----------
+    process "用户认证\n(User Auth)" as Auth
+    process "课程管理\n(Course Mgmt)" as Course
+    process "作业管理\n(Assignment Mgmt)" as Assignment
+    process "AI助手\n(AI Assistant)" as AI
+    process "推荐系统\n(Recommendation)" as Rec
+    process "数据统计\n(Data Analytics)" as Stats
+
+}
+
+' ===============================
+' 数据存储（Data Stores）
+' ===============================
+database "用户数据库\n(User DB)" as UserDB
+database "课程数据库\n(Course DB)" as CourseDB
+database "作业数据库\n(Assignment DB)" as AssignDB
+database "AI记录库\n(AI Log DB)" as AILogDB
+database "用户行为库\n(User Behavior DB)" as BehaviorDB
+
+' ======================================
+' 数据流（Data Flows）
+' ======================================
+
+' --------------------------------------
+' 学生数据流（输入 + 输出）
+' --------------------------------------
+Student --> Auth : 登录请求\n注册请求
+Auth --> Student : 登录成功响应\n登录失败响应\n注册结果
+
+Student --> Course : 课程查询请求\n选课请求\n退课请求
+Course --> Student : 课程列表\n选课结果\n退课结果
+
+Student --> Assignment : 作业提交数据\n作业查询请求
+Assignment --> Student : 作业列表\n作业提交结果\n提交失败响应
+
+Student --> AI : 提问内容
+AI --> Student : AI回复内容
+
+Student --> Rec : 推荐请求
+Rec --> Student : 推荐课程列表
+
+
+' --------------------------------------
+' 教师数据流
+' --------------------------------------
+Teacher --> Course : 新建课程数据\n更新课程数据
+Course --> Teacher : 课程发布结果
+
+Teacher --> Assignment : 作业发布数据\n批改数据
+Assignment --> Teacher : 发布结果\n批改结果
+
+Teacher --> Stats : 教学数据查询请求
+Stats --> Teacher : 教学数据报表
+
+
+' --------------------------------------
+' 管理员数据流
+' --------------------------------------
+Admin --> Course : 课程审核请求
+Course --> Admin : 审核通过结果\n审核拒绝结果
+
+Admin --> Stats : 平台数据查询请求
+Stats --> Admin : 平台数据报表
+
+
+' --------------------------------------
+' 处理过程 ↔ 数据存储
+' --------------------------------------
+Auth <--> UserDB : 用户凭证数据\n注册信息\n验证结果
+
+Course <--> CourseDB : 课程信息读写
+
+Assignment <--> AssignDB : 作业数据\n提交记录读写
+
+AI <--> AILogDB : 聊天记录存取
+AI --> UserDB : 用户基础信息读取（身份/画像）
+
+Rec --> CourseDB : 获取课程元数据
+Rec --> BehaviorDB : 用户行为/学习偏好读取
+
+Stats --> UserDB : 用户统计数据
+Stats --> CourseDB : 课程统计数据
+Stats --> AssignDB : 作业统计数据
+Stats --> AILogDB : AI使用统计数据
+Stats --> BehaviorDB : 学习行为分析数据
+
+@enduml

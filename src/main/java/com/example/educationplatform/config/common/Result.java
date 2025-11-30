@@ -1,4 +1,4 @@
-package com.example.educationplatform.common;
+package com.example.educationplatform.config.common;
 
 import com.example.educationplatform.enums.ResultCode;
 import io.swagger.v3.oas.annotations.media.Schema;

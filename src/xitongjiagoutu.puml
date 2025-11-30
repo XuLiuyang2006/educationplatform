@@ -1,0 +1,146 @@
+@startuml
+title 教育平台系统整体架构图（全量模块）
+
+' ========================
+' 前端层
+' ========================
+package "前端层（Web / 移动端）" {
+  [Web前端(Vue)] as web
+  [移动端(H5/App)] as mobile
+}
+
+' ========================
+' 网关层
+' ========================
+package "网关层" {
+  [API网关] as gateway
+  [认证中心(JWT)] as auth
+  [限流/防护] as rate_limit
+}
+
+web --> gateway
+mobile --> gateway
+gateway --> auth
+gateway --> rate_limit
+
+' ========================
+' 业务服务层（所有模块）
+' ========================
+
+package "用户服务" {
+  [UserController]
+  [UserService]
+}
+
+package "管理员用户管理" {
+  [AdminUserController]
+}
+
+package "教师课程管理" {
+  [TeacherCourseController]
+  [TeacherCourseService]
+}
+
+package "公开课程服务" {
+  [PublicCourseController]
+}
+
+package "管理员课程管理" {
+  [AdminCourseController]
+}
+
+package "学生选课服务" {
+  [StudentCourseController]
+}
+
+package "档案管理" {
+  [ProfileController]
+}
+
+package "教师作业管理" {
+  [TeacherAssignmentController]
+}
+
+package "学生作业服务" {
+  [StudentAssignmentController]
+}
+
+package "AI问答服务" {
+  [AiChatController]
+  [AiService]
+}
+
+package "推荐系统服务" {
+  [RecommendController]
+  [RecommendService]
+}
+
+' =========================
+' 业务服务间关系
+' =========================
+
+gateway --> UserController
+gateway --> AdminUserController
+gateway --> TeacherCourseController
+gateway --> PublicCourseController
+gateway --> AdminCourseController
+gateway --> StudentCourseController
+gateway --> ProfileController
+gateway --> TeacherAssignmentController
+gateway --> StudentAssignmentController
+gateway --> AiChatController
+gateway --> RecommendController
+
+UserController --> UserService
+TeacherCourseController --> TeacherCourseService
+RecommendController --> RecommendService
+AiChatController --> AiService
+
+' =========================
+' 数据层
+' =========================
+package "数据层" {
+  [MySQL]
+  [Redis]
+  [FileStorage(MinIO/本地)]
+}
+
+' 用户相关
+UserService --> MySQL
+UserService --> Redis
+
+' 管理员用户管理
+AdminUserController --> MySQL
+
+' 教师课程管理
+TeacherCourseService --> MySQL
+TeacherCourseService --> FileStorage
+
+' 公开课程
+PublicCourseController --> MySQL
+
+' 管理员课程
+AdminCourseController --> MySQL
+
+' 学生选课
+StudentCourseController --> MySQL
+
+' 档案
+ProfileController --> MySQL
+
+' 作业系统
+TeacherAssignmentController --> MySQL
+TeacherAssignmentController --> FileStorage
+
+StudentAssignmentController --> MySQL
+StudentAssignmentController --> FileStorage
+
+' 推荐系统
+RecommendService --> MySQL
+RecommendService --> Redis
+
+' AI 服务
+AiService --> MySQL
+AiService --> Redis
+
+@enduml

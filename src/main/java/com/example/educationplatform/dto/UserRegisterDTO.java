@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Schema(description = "用户DTO")
 @Data
-public class UserDTO {
-    private Long id;
+public class UserRegisterDTO {
     private String username;
+    private String password;
     private String email;
-    RoleEnum role;
+    private RoleEnum role;
 }

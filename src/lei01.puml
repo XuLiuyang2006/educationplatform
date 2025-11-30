@@ -1,0 +1,121 @@
+@startuml
+'left to right direction
+skinparam nodesep 20
+skinparam ranksep 20
+class User {
+  -id: Long
+  -username: String
+  -password: String
+  -email: String
+  -phone: String
+  -role: RoleEnum
+  -status: UserStatus
+  -createTime: LocalDateTime
+  -updateTime: LocalDateTime
+}
+
+class StudentProfile {
+  -userId: Long
+  -major: String
+  -grade: String
+  -interests: String
+  -goals: String
+  -historyCourses: String
+  -avgProgress: Double
+  -totalStudyHours: Integer
+}
+
+class TeacherProfile {
+  -userId: Long
+  -expertise: String
+  -tags: String
+  -teachingStyle: String
+  -avgRating: Double
+}
+
+class Course {
+  -id: Long
+  -title: String
+  -description: String
+  -contentUrl: String
+  -teacherId: Long
+  -teacherName: String
+  -status: CourseStatus
+  -createTime: LocalDateTime
+  -updateTime: LocalDateTime
+  -auditBy: Long
+  -rejectReason: String
+  -auditTime: LocalDateTime
+  -tags: String
+  -visitCount: Long
+}
+
+class Assignment {
+  -id: Long
+  -courseId: Long
+  -title: String
+  -description: String
+  -dueTime: LocalDateTime
+  -maxScore: Double
+  -createTime: LocalDateTime
+  -updateTime: LocalDateTime
+}
+
+class AssignmentSubmission {
+  -id: Long
+  -assignmentId: Long
+  -studentId: Long
+  -content: String
+  -attachmentUrl: String
+  -submitTime: LocalDateTime
+  -score: Double
+  -feedback: String
+  -gradeTime: LocalDateTime
+}
+
+class StudentCourse {
+  -id: Long
+  -studentId: Long
+  -progress: Double
+  -selectedAt: LocalDateTime
+  -title: String
+}
+
+class CourseMaterials {
+  -id: Long
+  -courseId: Long
+  -fileName: String
+  -originalFileName: String
+  -filePath: String
+}
+
+class AiChat {
+  -id: Long
+  -userId: Long
+  -question: String
+  -answer: String
+  -createTime: LocalDateTime
+}
+
+class VisitLog {
+  -id: Long
+  -userId: Long
+  -endpoint: String
+  -visitTime: LocalDateTime
+}
+
+' 关系定义
+User ||--|| StudentProfile
+User ||--|| TeacherProfile
+TeacherProfile ||--o{ Course
+Course ||--o{ Assignment
+Course ||--o{ CourseMaterials
+Assignment ||--o{ AssignmentSubmission
+User ||--o{ AiChat
+User ||--o{ VisitLog
+User }o--o{ Course : through StudentCourse
+StudentCourse }o--|| Course
+StudentCourse }o--|| User
+AssignmentSubmission }|--|| Assignment
+AssignmentSubmission }|--|| User
+@enduml

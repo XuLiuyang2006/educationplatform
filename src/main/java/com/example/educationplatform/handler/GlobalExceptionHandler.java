@@ -1,6 +1,6 @@
 package com.example.educationplatform.handler;
 
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.enums.ResultCode;
 import com.example.educationplatform.exception.BizException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

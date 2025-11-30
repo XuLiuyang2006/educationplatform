@@ -1,0 +1,60 @@
+@startuml
+!pragma useExperimentalFeatures true
+
+' ===============================
+' 外部实体（External Entities）
+' ===============================
+entity "学生" as Student
+entity "教师" as Teacher
+entity "管理员" as Admin
+
+' ===============================
+' 处理过程（Processes）
+' ===============================
+process "用户认证\n(User Auth)" as Auth
+process "课程管理\n(Course Mgmt)" as Course
+process "作业管理\n(Assignment Mgmt)" as Assignment
+process "AI助手\n(AI Assistant)" as AI
+process "推荐系统\n(Recommender)" as Rec
+process "数据统计\n(Data Analytics)" as Stats
+
+' ===============================
+' 数据存储（Data Stores）
+' ===============================
+database "用户数据库\n(User DB)" as UserDB
+database "课程数据库\n(Course DB)" as CourseDB
+database "作业数据库\n(Assignment DB)" as AssignDB
+database "AI记录库\n(AI Log DB)" as AILogDB
+
+' ======================================
+' 数据流（Data Flows）
+' ======================================
+
+' ----- 学生 -----
+Student --> Auth : 登录/注册信息
+Student --> Course : 查询课程\n选课/退课
+Student --> Assignment : 作业提交/查询
+Student --> AI : 提问内容
+Student --> Rec : 请求课程推荐
+
+' ----- 教师 -----
+Teacher --> Course : 发布/更新课程
+Teacher --> Assignment : 发布/批改作业
+Teacher --> Stats : 请求教学数据
+
+' ----- 管理员 -----
+Admin --> Course : 审核课程
+Admin --> Stats : 请求平台数据
+
+' ----- 处理过程 <-> 数据库 -----
+Auth <--> UserDB : 读取/写入用户信息
+Course <--> CourseDB : 读取/写入课程数据
+Assignment <--> AssignDB : 作业与提交记录
+AI <--> AILogDB : 聊天记录存取
+Rec --> CourseDB : 读取课程数据用于推荐
+Stats --> UserDB : 统计用户数据
+Stats --> CourseDB : 统计课程数据
+Stats --> AssignDB : 统计作业数据
+Stats --> AILogDB : 分析AI使用数据
+
+@enduml

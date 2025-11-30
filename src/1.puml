@@ -1,0 +1,26 @@
+@startuml
+package "com.example.educationplatform" {
+  package controller {
+    class UserController
+    class AiChatController
+    class StudentCourseController
+  }
+
+  package service {
+    class UserService
+    class AiChatService
+    class StudentCourseService
+  }
+
+  package repository {
+    class UserRepository
+    class CourseRepository
+  }
+}
+
+UserController --> UserService
+AiChatController --> AiChatService
+StudentCourseController --> StudentCourseService
+UserService --> UserRepository
+StudentCourseService --> CourseRepository
+@enduml

@@ -1,6 +1,7 @@
 package com.example.educationplatform.service.impl;
 
 import com.example.educationplatform.dto.StudentCourseCreateDTO;
+import com.example.educationplatform.dto.StudentCourseDetailDTO;
 import com.example.educationplatform.dto.StudentCourseListDTO;
 import com.example.educationplatform.entity.Course;
 import com.example.educationplatform.entity.StudentCourse;
@@ -60,7 +61,17 @@ public class StudentCourseServiceImpl implements StudentCourseService {
     @NonNull
     public List<StudentCourseListDTO> getAllCourses() {
         // 获取所有课程
-        return courseRepository.findAll()
+        return courseRepository.findByStatus(CourseStatus.APPROVED)
+                .stream()
+                .map(this::studentCourseListToDTO)
+                .collect(Collectors.toList());
+    }
+
+    //提供接口给接下来可能存在的公共控制器使用
+    @Override
+    public List<StudentCourseListDTO> getCoursesByStatus(CourseStatus status) {
+        // 获取指定状态的课程
+        return courseRepository.findByStatus(status)
                 .stream()
                 .map(this::studentCourseListToDTO)
                 .collect(Collectors.toList());
@@ -172,6 +183,15 @@ public class StudentCourseServiceImpl implements StudentCourseService {
                 sc.getCourse().getContentUrl()
         ));
 
+    }
+
+    @Override
+    public StudentCourseDetailDTO getCourseDetail(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new BizException(ResultCode.COURSE_NOT_FOUND, "课程不存在"));
+        StudentCourseDetailDTO dto = new StudentCourseDetailDTO();
+        BeanUtils.copyProperties(course, dto);
+        return dto;
     }
 
 }

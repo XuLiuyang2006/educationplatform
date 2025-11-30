@@ -3,8 +3,9 @@ package com.example.educationplatform.controller;
 
 import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.dto.StudentCourseCreateDTO;
+import com.example.educationplatform.dto.StudentCourseDetailDTO;
 import com.example.educationplatform.dto.StudentCourseListDTO;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.StudentCourseService;
@@ -66,6 +67,15 @@ public class StudentCourseController {
         Page<StudentCourseListDTO> result = studentCourseService.selectByStudentId(studentId, pageable);
         return Result.success(result);
 
+    }
+
+    //获取课程的详细信息
+    @LoginRequired
+    @RoleRequired(RoleEnum.STUDENT)
+    @Operation(summary = "获取课程详情", description = "获取课程详细信息接口")
+    @GetMapping("/detail")
+    public Result<StudentCourseDetailDTO> getCourseDetail(@RequestParam Long courseId) {
+        return Result.success(studentCourseService.getCourseDetail(courseId));
     }
 
     //POST接口

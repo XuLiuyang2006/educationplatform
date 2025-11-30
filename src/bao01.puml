@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+skinparam nodesep 100
+skinparam ranksep 100
+
+package "表现层" {
+  package "controller" as controller
+  package "interceptor" as interceptor
+}
+
+package "业务层" {
+  package "service" as service
+}
+
+package "数据层" {
+  package "repository" as repository
+  package "entity" as entity
+  package "dto" as dto
+}
+
+package "支撑层" {
+  package "ai" as ai
+  package "aop" as aop
+  package "config" as config
+  package "annotation" as annotation
+  package "enums" as enums
+}
+
+package "异常处理" {
+  package "exception" as exception
+  package "handler" as handler
+}
+
+controller --> service
+service --> repository
+service --> ai
+service --> dto
+repository --> entity
+aop --> controller
+aop --> service
+interceptor --> controller
+handler --> exception
+config --> annotation
+config --> enums
+@enduml

@@ -2,9 +2,9 @@ package com.example.educationplatform.controller;
 
 import com.example.educationplatform.annotation.LoginRequired;
 import com.example.educationplatform.annotation.RoleRequired;
-import com.example.educationplatform.common.Result;
+import com.example.educationplatform.config.common.Result;
 import com.example.educationplatform.dto.TeacherCourseCreateDTO;
-import com.example.educationplatform.dto.StudentCourseListDTO;
+import com.example.educationplatform.dto.TeacherCourseDTO;
 import com.example.educationplatform.dto.TeacherCourseListDTO;
 import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.service.TeacherCourseService;
@@ -60,9 +60,9 @@ public class TeacherCourseController {
     @Operation(summary = "获取我的课程列表", description = "教师获取自己创建的课程列表接口")
     @RoleRequired(RoleEnum.TEACHER)
     @GetMapping("/my")
-    public Result<List<TeacherCourseListDTO>> listMyCourses(HttpSession session) {
+    public Result<List<TeacherCourseDTO>> listMyCourses(HttpSession session) {
         Long teacherId = (Long) session.getAttribute("userId");
-        List<TeacherCourseListDTO> list = teacherCourseService.listMyCoursesList(teacherId);
+        List<TeacherCourseDTO> list = teacherCourseService.listMyCoursesList(teacherId);
         return Result.success(list);
     }
 

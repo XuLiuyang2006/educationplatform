@@ -18,6 +18,7 @@ public enum ResultCode {
     EMAIL_NOT_NULl(4004, "邮箱不能为空"),
     PASSWORD_NOT_NULL(4005, "密码不能为空"),
     SERVER_ERROR(500, "服务器异常"),
+    USERNAME_NOT_NULL(4006, "用户名不能为空"),
 
     // 有关课程的状态码
     COURSE_NOT_FOUND(4041, "课程不存在"),
@@ -25,6 +26,7 @@ public enum ResultCode {
     ALREADY_ENROLLED(4007, "已选过此课程"),
     NO_PERMISSION(4031, "无权限操作"),
     COURSE_NOT_AVAILABLE(4009, "课程状态不允许选课"),
+    COURSE_TITLE_NOT_NULL(40010, "课程标题不能为空"),
 
     //有关教师上传文件的状态码
     FILE_UPLOAD_FAILED(4010, "文件上传失败"),
@@ -36,7 +38,13 @@ public enum ResultCode {
     PARAM_ERROR(4000, "参数错误"),
 
     //管理员相关状态码
-    INVALID_OPERATION(4008, "无效操作");
+    INVALID_OPERATION(4008, "无效操作"),
+
+    //用户档案相关状态码
+    USER_PROFILE_NOT_FOUND(4043, "用户档案不存在"),
+
+    //通用状态码
+    BAD_REQUEST(400, "错误的请求");
 
 
 

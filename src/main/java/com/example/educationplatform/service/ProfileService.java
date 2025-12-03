@@ -4,9 +4,15 @@ import com.example.educationplatform.dto.StudentProfileDTO;
 import com.example.educationplatform.dto.TeacherProfileDTO;
 
 public interface ProfileService {
+    //Student
+    boolean existsStudentProfile(Long userId);
     StudentProfileDTO getStudentProfile(Long userId);
-    StudentProfileDTO updateStudentProfile(StudentProfileDTO dto ,Long userId);
+    StudentProfileDTO createStudentProfile(StudentProfileDTO dto);
+    StudentProfileDTO updateStudentProfile(StudentProfileDTO dto);
 
+    //Teacher
+    boolean existsTeacherProfile(Long userId);
     TeacherProfileDTO getTeacherProfile(Long userId);
-    TeacherProfileDTO updateTeacherProfile(TeacherProfileDTO dto,Long userId);
+    TeacherProfileDTO createTeacherProfile(TeacherProfileDTO dto);
+    TeacherProfileDTO updateTeacherProfile(TeacherProfileDTO dto);
 }

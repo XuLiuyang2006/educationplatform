@@ -42,6 +42,7 @@ public enum ResultCode {
 
     //用户档案相关状态码
     USER_PROFILE_NOT_FOUND(4043, "用户档案不存在"),
+    USER_PROFILE_ALREADY_EXISTS(4009, "用户档案已存在"),
 
     //通用状态码
     BAD_REQUEST(400, "错误的请求");

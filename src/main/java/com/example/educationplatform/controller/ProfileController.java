@@ -32,10 +32,8 @@ public class ProfileController {
     @RoleRequired(RoleEnum.STUDENT)
     @Operation(summary = "更新学生档案", description = "更新学生档案信息")
     @PutMapping("/student")
-    public Result<StudentProfileDTO> updateStudentProfile(@RequestBody StudentProfileDTO dto,
-                                                          HttpSession session) {
-        Long userId = (Long)  session.getAttribute("userId");
-        return Result.success(profileService.updateStudentProfile(dto, userId));
+    public Result<StudentProfileDTO> updateStudentProfile(@RequestBody StudentProfileDTO dto) {
+        return Result.success(profileService.updateStudentProfile(dto));
     }
 
     @Operation(summary = "获取学生自己的档案",description = "获取登录学生自己的档案")
@@ -67,9 +65,7 @@ public class ProfileController {
     @RoleRequired(RoleEnum.TEACHER)
     @Operation(summary = "更新教师档案", description = "更新教师档案信息")
     @PutMapping("/teacher")
-    public Result<TeacherProfileDTO> updateTeacherProfile(@RequestBody TeacherProfileDTO dto,
-                                                          HttpSession session) {
-        Long userId = (Long)  session.getAttribute("userId");
-        return Result.success(profileService.updateTeacherProfile(dto, userId));
+    public Result<TeacherProfileDTO> updateTeacherProfile(@RequestBody TeacherProfileDTO dto) {
+        return Result.success(profileService.updateTeacherProfile(dto));
     }
 }

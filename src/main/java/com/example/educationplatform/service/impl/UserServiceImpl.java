@@ -1,12 +1,15 @@
 package com.example.educationplatform.service.impl;
 
-import com.example.educationplatform.dto.LoginDTO;
-import com.example.educationplatform.dto.UserDTO;
-import com.example.educationplatform.dto.UserRegisterDTO;
+import com.example.educationplatform.dto.*;
+import com.example.educationplatform.entity.StudentProfile;
+import com.example.educationplatform.entity.TeacherProfile;
 import com.example.educationplatform.entity.User;
 import com.example.educationplatform.enums.ResultCode;
+import com.example.educationplatform.enums.RoleEnum;
 import com.example.educationplatform.enums.UserStatus;
 import com.example.educationplatform.exception.BizException;
+import com.example.educationplatform.repository.StudentProfileRepository;
+import com.example.educationplatform.repository.TeacherProfileRepository;
 import com.example.educationplatform.repository.UserRepository;
 import com.example.educationplatform.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final HttpSession session;
+    private final StudentProfileRepository studentProfileRepository;
+    private final TeacherProfileRepository teacherProfileRepository;
 
     @Override
     @Transactional
@@ -62,7 +67,37 @@ public class UserServiceImpl implements UserService {
                         .build();
         //TODO：这里需要把相应的注册信息填入profile表中
 
+        //先保存 user， 拿到 user.id
         userRepository.save(user);
+
+        //根据角色自动创建 profile
+        if (user.getRole() == RoleEnum.STUDENT) {
+            StudentProfile profile = new StudentProfile();
+            profile.setUserId(user.getId());
+            profile.setMajor("未填写");
+            profile.setGrade("未填写");
+            //Interests/goals/historyCourses/avgProgress/totalStudyHours/
+            profile.setInterests("未填写");
+            profile.setGoals("未填写");
+            profile.setHistoryCourses("空");
+            profile.setAvgProgress(0.0);
+            profile.setTotalStudyHours(0);
+            //保存 profile
+            studentProfileRepository.save(profile);
+        }
+
+        //教师档案
+        if (user.getRole() == RoleEnum.TEACHER) {
+            TeacherProfile profile = new TeacherProfile();
+            profile.setUserId(user.getId());
+            profile.setExpertise("未填写");
+            profile.setTags("未填写");
+            profile.setTeachingStyle("未填写");
+            profile.setAvgRating(0.0);
+            //保存 profile
+            teacherProfileRepository.save(profile);
+        }
+
     }
 
     @Override
